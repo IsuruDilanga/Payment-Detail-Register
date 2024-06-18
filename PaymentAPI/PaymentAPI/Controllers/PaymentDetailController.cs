@@ -24,6 +24,10 @@ namespace PaymentAPI.Controllers
         [HttpGet]
         public async Task<ActionResult<IEnumerable<PaymentDetail>>> GetpaymentDetails()
         {
+            if(_context.paymentDetails == null)
+            {
+                return NotFound();
+            }
             return await _context.paymentDetails.ToListAsync();
         }
 
@@ -31,6 +35,10 @@ namespace PaymentAPI.Controllers
         [HttpGet("{id}")]
         public async Task<ActionResult<PaymentDetail>> GetPaymentDetail(int id)
         {
+            if(_context.paymentDetails == null)
+            {
+                return NotFound();
+            }
             var paymentDetail = await _context.paymentDetails.FindAsync(id);
 
             if (paymentDetail == null)
@@ -46,6 +54,7 @@ namespace PaymentAPI.Controllers
         [HttpPut("{id}")]
         public async Task<IActionResult> PutPaymentDetail(int id, PaymentDetail paymentDetail)
         {
+            
             if (id != paymentDetail.PaymentDetailId)
             {
                 return BadRequest();
@@ -77,6 +86,10 @@ namespace PaymentAPI.Controllers
         [HttpPost]
         public async Task<ActionResult<PaymentDetail>> PostPaymentDetail(PaymentDetail paymentDetail)
         {
+            if(_context.paymentDetails == null)
+            {
+                return Problem("Entity set 'PaymentDetailContext.paymentDetails' is null.");
+            }
             _context.paymentDetails.Add(paymentDetail);
             await _context.SaveChangesAsync();
 
@@ -87,6 +100,11 @@ namespace PaymentAPI.Controllers
         [HttpDelete("{id}")]
         public async Task<IActionResult> DeletePaymentDetail(int id)
         {
+            if(_context.paymentDetails == null)
+            {
+                return NotFound();
+            }
+
             var paymentDetail = await _context.paymentDetails.FindAsync(id);
             if (paymentDetail == null)
             {
